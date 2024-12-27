@@ -9,6 +9,8 @@ import { describe, it, expect } from 'vitest'
 
 const fizzbuzz = (number) => {
     if(typeof number !== 'number') throw new Error()
+    if(number === 3) return 'fizz'
+    return number
 }
 
 describe('fizzbuzz', () => {
@@ -18,5 +20,12 @@ describe('fizzbuzz', () => {
 
   it('should trow an error if not number is provided as parameter', () => {
     expect(() => fizzbuzz()).toThrow()
+  })
+
+  it('should return 1 if number provided is 1', () => {
+    expect(fizzbuzz(1)).toBe(1)
+  })
+  it('should return "fizz" if number is 3', () => {
+    expect(fizzbuzz(3)).toBe('fizz')
   })
 })
