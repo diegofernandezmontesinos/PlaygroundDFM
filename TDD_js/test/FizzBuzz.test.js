@@ -13,6 +13,7 @@ describe('fizzbuzz', () => {
   it('should return 1 if number provided is 1', () => {
     expect(fizzbuzz(1)).toBe(1)
   })
+
   it('should return "fizz" if number is 3', () => {
     expect(fizzbuzz(3)).toBe('fizz')
   })
