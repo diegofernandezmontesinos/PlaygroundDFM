@@ -19,8 +19,14 @@ const TodoList = () => {
   }
 
   const deleteTask = (index) => {
-    const updatedTasks = tasks.filter((_, i) => i !== index);
-    setTasks(updatedTasks);
+    const updatedTask = tasks.filter((_, i) => i !== index);
+    setTasks(updatedTask);
+  }
+
+  const editTask = (index, newText) => {
+    const updatedTask = [...tasks]
+    updatedTask[index].text = newText
+    setTasks(updatedTask)
   }
 
   const pendingTaks = tasks.filter((task) => !task.completed).length
@@ -42,6 +48,7 @@ const TodoList = () => {
             </span>
             <button onClick={() => completeTask(index)}>Complete</button>
             <button onClick={() => deleteTask(index)}>Delete</button>
+            <button onClick={() => editTask(index, prompt("Edit task:", task.text) || task.text)}>Edit a task</button>
             </li>
         ))}
       </ul>

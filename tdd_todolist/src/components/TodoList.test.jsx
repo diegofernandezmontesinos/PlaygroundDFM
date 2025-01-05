@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { screen, render, fireEvent } from '@testing-library/react'
 import TodoList from './TodoList'
 
@@ -39,7 +39,7 @@ describe('todolist', () => {
     })
 
     it('should delete a task', () => {
-        render(<TodoList />);
+        renderTodoList()
         const input = screen.getByPlaceholderText('Add a task');
         const button = screen.getByText('Add');
         fireEvent.change(input, { target: { value: 'New Task' } });
@@ -50,15 +50,29 @@ describe('todolist', () => {
       });
 
     it('should show the pendings task', () => {
-    render(<TodoList />);
-    const input = screen.getByPlaceholderText('Add a task');
-    const button = screen.getByText('Add');
-    fireEvent.change(input, { target: { value: 'Task 1' } });
-    fireEvent.click(button);
-    fireEvent.change(input, { target: { value: 'Task 2' } });
-    fireEvent.click(button);
-    const completeButton = screen.getAllByText('Complete')[0];
-    fireEvent.click(completeButton);
-    expect(screen.getByText('Pending Tasks: 1')).toBeInTheDocument();
+        renderTodoList()
+        const input = screen.getByPlaceholderText('Add a task');
+        const button = screen.getByText('Add');
+        fireEvent.change(input, { target: { value: 'Task 1' } });
+        fireEvent.click(button);
+        fireEvent.change(input, { target: { value: 'Task 2' } });
+        fireEvent.click(button);
+        const completeButton = screen.getAllByText('Complete')[0];
+        fireEvent.click(completeButton);
+        expect(screen.getByText('Pending Tasks: 1')).toBeInTheDocument();
     });
+
+    it('should edit a task', () => {
+        renderTodoList()
+        const input = screen.getByPlaceholderText('Add a task');
+        const addButton = screen.getByText('Add');
+        fireEvent.change(input, { target: { value: 'Task to edit' } });
+        fireEvent.click(addButton);
+
+        const editButton = screen.getByText('Edit a task');
+        globalThis.prompt = vi.fn(() => 'Task edited')
+        fireEvent.click(editButton)
+
+        expect(screen.getByText(/Task edited/i)).toBeInTheDocument()
+    })
 })
