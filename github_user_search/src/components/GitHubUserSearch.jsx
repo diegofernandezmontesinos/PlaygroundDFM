@@ -1,30 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from 'react';
 
-export const GitHubUserSearch = () => {
-  const [query, setQuery] = useState("");
+function UserSearch() {
+  const [query, setQuery] = useState('');
   const [users, setUsers] = useState([]);
 
-  const handleData = async () => {
+  const handleSearch = async () => {
     try {
-      const response = await fetch(
-        `https://api.github.com/search/users?q=${query}`
-      );
+      const response = await fetch(`https://api.github.com/search/users?q=${query}`);
       const data = await response.json();
       setUsers(data.items || []);
     } catch (error) {
-      console.log(error);
+      console.error('Error fetching users:', error);
     }
   };
 
   return (
-    <>
-      <div>GitHub User Search</div>
+    <div>
       <input
         type="text"
         placeholder="Enter username"
+        value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <button onClick={handleData}>Search</button>
+      <button onClick={handleSearch}>Search</button>
       <ul>
         {users.map((user) => (
           <li key={user.login}>
@@ -35,6 +33,8 @@ export const GitHubUserSearch = () => {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
-};
+}
+
+export default UserSearch;
