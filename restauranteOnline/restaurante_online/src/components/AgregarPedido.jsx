@@ -3,6 +3,20 @@ import React, { useState } from "react";
 const AgregarPedido = () => {
   const [clientName, setClientName] = useState("");
   const [orderDetails, setOrderDetails] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [confirmationMessage, setConfirmationMessage] = useState("");
+
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+    setConfirmationMessage("Order sent to kitchen");
+    setTimeout(() => {
+      console.log("Pedido enviado:", { clientName, orderDetails });
+      setIsSubmitting(false);
+      setConfirmationMessage("");
+    }, 2000);
+  };
+
+  const isFormValid = clientName.trim() && orderDetails.trim();
 
   return (
     <>
@@ -18,9 +32,14 @@ const AgregarPedido = () => {
         value={orderDetails}
         onChange={(e) => setOrderDetails(e.target.value)}
       />
-      <button type="submit" disabled={!(clientName && orderDetails)}>
+      <button
+        type="submit"
+        disabled={!isFormValid || isSubmitting}
+        onClick={handleSubmit}
+      >
         Submit
       </button>
+      {confirmationMessage && <p>{confirmationMessage}</p>}
     </>
   );
 };
